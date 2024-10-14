@@ -1,0 +1,87 @@
+[*]
+[*] GTKWave Analyzer v3.3.100 (w)1999-2019 BSI
+[*] Mon Oct 14 08:56:33 2024
+[*]
+[dumpfile] "E:\workspace\verilog-uart\tb\uart2ebi_tb.vcd"
+[dumpfile_mtime] "Mon Oct 14 06:16:16 2024"
+[dumpfile_size] 5344959
+[savefile] "E:\workspace\verilog-uart\tb\uart2ebi_tb.gtkw"
+[timestart] 0
+[size] 1440 837
+[pos] -1 -1
+*-28.047028 852000000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] uart2ebi_tb.
+[sst_width] 197
+[signals_width] 166
+[sst_expanded] 1
+[sst_vpaned_height] 236
+@28
+uart2ebi_tb.uart2ebi_inst.clk
+uart2ebi_tb.uart2ebi_inst.rst
+@22
+[color] 7
+uart2ebi_tb.uart_inst.m_axis_tdata[7:0]
+@28
+[color] 7
+uart2ebi_tb.uart_inst.m_axis_tready
+[color] 7
+uart2ebi_tb.uart_inst.m_axis_tvalid
+@22
+[color] 7
+uart2ebi_tb.uart_inst.s_axis_tdata[7:0]
+@28
+[color] 7
+uart2ebi_tb.uart_inst.s_axis_tready
+[color] 7
+uart2ebi_tb.uart_inst.s_axis_tvalid
+[color] 3
+uart2ebi_tb.uart2ebi_inst.rxd
+[color] 3
+uart2ebi_tb.uart2ebi_inst.txd
+@22
+[color] 6
+uart2ebi_tb.uart2ebi_inst.m_axis_tdata[7:0]
+@28
+[color] 6
+uart2ebi_tb.uart2ebi_inst.m_axis_tready
+[color] 6
+uart2ebi_tb.uart2ebi_inst.m_axis_tvalid
+[color] 6
+uart2ebi_tb.uart2ebi_inst.s_axis_tready
+@22
+[color] 6
+uart2ebi_tb.uart2ebi_inst.s_axis_tdata[7:0]
+@28
+[color] 6
+uart2ebi_tb.uart2ebi_inst.s_axis_tvalid
+[color] 2
+uart2ebi_tb.uart2ebi_inst.ebi_cs
+[color] 2
+uart2ebi_tb.uart2ebi_inst.ebi_rden
+[color] 2
+uart2ebi_tb.uart2ebi_inst.ebi_wren
+@22
+[color] 2
+uart2ebi_tb.uart2ebi_inst.ebi_addr[15:0]
+[color] 2
+uart2ebi_tb.uart2ebi_inst.ebi_dout[15:0]
+[color] 2
+uart2ebi_tb.uart2ebi_inst.ebi_din[15:0]
+@23
+uart2ebi_tb.uart2ebi_inst.crc_ret[7:0]
+@22
+uart2ebi_tb.uart2ebi_inst.cnt_ebird[3:0]
+uart2ebi_tb.uart2ebi_inst.ebi_addr_b[15:0]
+uart2ebi_tb.uart2ebi_inst.ebi_data_b2[15:0]
+uart2ebi_tb.uart2ebi_inst.ebi_data_b[15:0]
+uart2ebi_tb.uart2ebi_inst.prescale[15:0]
+@28
+uart2ebi_tb.uart2ebi_inst.rx_frame_error
+uart2ebi_tb.uart2ebi_inst.rx_overrun_error
+uart2ebi_tb.uart2ebi_inst.rx_busy
+uart2ebi_tb.uart2ebi_inst.tx_busy
+@24
+uart2ebi_tb.uart2ebi_inst.state[3:0]
+uart2ebi_tb.uart2ebi_inst.state_ebi[1:0]
+[pattern_trace] 1
+[pattern_trace] 0
