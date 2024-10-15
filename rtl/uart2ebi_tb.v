@@ -7,7 +7,7 @@ localparam CRC_INIT = 8'h14;
   //Ports
   reg  clk=0;
   reg  rst=1;
-  reg [15:0] prescale=40;
+  reg [15:0] prescale=13;
   wire  rxd;
   wire  txd;
   wire ebi_cs;

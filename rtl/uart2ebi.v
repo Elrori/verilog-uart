@@ -17,7 +17,9 @@ module uart2ebi (
     output  wire        tx_busy,
     output  wire        rx_busy,
     output  wire        rx_overrun_error,
-    output  wire        rx_frame_error
+    output  wire        rx_frame_error,
+    output  reg         wr_crc_err,   /*synthesis keep=true*/
+    output  reg         rd_crc_err    /*synthesis keep=true*/
 
 );
 localparam CRC_INIT = 8'h14;
@@ -48,10 +50,9 @@ reg   [15:0]ebi_addr_b;
 reg   [15:0]ebi_data_b;
 reg   [15:0]ebi_data_b2;
 reg   [7 :0]crc_ret;
-reg [1:0]state_ebi;
-reg [3:0]cnt_ebird;
+reg   [1 :0]state_ebi;
+reg   [3 :0]cnt_ebird;
 assign      m_axis_tready = 1'd1;
-
 uart #(.DATA_WIDTH(8))
 uart_inst (
     .clk(clk),
@@ -82,6 +83,8 @@ always @(posedge clk or posedge rst) begin
         ebi_data_b  <= 'd0;
         s_axis_tdata <= 'd0;
         s_axis_tvalid<= 'd0;
+        rd_crc_err<= 1'd0;
+        wr_crc_err <= 1'd0;
     end else begin
         case (state)
             0: begin
@@ -108,19 +111,15 @@ always @(posedge clk or posedge rst) begin
             end
             3: begin // rd crc
                 if (m_axis_tvalid) begin
-                    if (crc_ret == m_axis_tdata)begin
-                        state <= state + 1'd1;
-                        crc_ret <= CRC_INIT;
-                    end else begin
-                        state <= 0;
-                        crc_ret <= CRC_INIT;
-                    end
+                    state <= state + 1'd1;
+                    crc_ret <= CRC_INIT;
+                    rd_crc_err <= (crc_ret != m_axis_tdata);
                 end
             end
             4: begin // rd success recv
                 state <= state + 1'd1;
             end
-            5: begin // rd ack
+            5: begin // rd ack head
                 if (state_ebi == 3) begin
                     state <= state + 1'd1;
                     s_axis_tdata  <= 8'hAC;
@@ -128,24 +127,24 @@ always @(posedge clk or posedge rst) begin
                     crc_ret <= crc8ccitt(8'hAC,crc_ret);
                 end
             end
-            6: begin // rd ack
+            6: begin // rd ack data
                 if (s_axis_tready) begin
                     state <= state + 1'd1;
                     s_axis_tdata  <= ebi_data_b2[15:8];
                     crc_ret <= crc8ccitt(ebi_data_b2[15:8],crc_ret);
                 end
             end
-            7: begin // rd ack
+            7: begin // rd ack data
                 if (s_axis_tready) begin
                     state <= state + 1'd1;
                     s_axis_tdata  <= ebi_data_b2[7:0];
                     crc_ret <= crc8ccitt(ebi_data_b2[7:0],crc_ret);
                 end
             end
-            8: begin // rd ack
+            8: begin // rd ack crc
                 if (s_axis_tready) begin
                     state <= state + 1'd1;
-                    s_axis_tdata  <= crc_ret;
+                    s_axis_tdata  <= rd_crc_err ? {crc_ret[7:1],~crc_ret[0]} : crc_ret;
                     crc_ret <= CRC_INIT;
                 end
             end
@@ -188,9 +187,11 @@ always @(posedge clk or posedge rst) begin
                 if (m_axis_tvalid) begin
                     if (crc_ret == m_axis_tdata)begin
                         state <= state + 1'd1;
+                        wr_crc_err <= 1'd0;
                         crc_ret <= CRC_INIT;
                     end else begin
                         state <= 0;
+                        wr_crc_err <= 1'd1;
                         crc_ret <= CRC_INIT;
                     end
                 end
