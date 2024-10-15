@@ -2,7 +2,7 @@ module uart2ebi (
     input   wire        clk,
     input   wire        rst,
 
-    input   wire [15:0] prescale, // Fclk / (baud * 8), baud:115200=prescale:135    baud:1201923=prescale:13
+    input   wire [15:0] prescale, // Fclk / (baud * 8), 125MHz:baud:115200=prescale:135    125MHz:baud:1201923=prescale:13  100MHz:baud:2500000=prescale:5
 
     input   wire        rxd,
     output  wire        txd,

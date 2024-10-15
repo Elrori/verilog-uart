@@ -197,7 +197,7 @@ initial begin
     #100
     wrs(16'h1234,16'h5678);
     wrs(16'h0001,16'hffee);
-    rds(16'h0010,data_ret);$display("read back: %x",data_ret);
+    rds(16'haaaa,data_ret);$display("read back: %x",data_ret);
     rds(16'h0011,data_ret);$display("read back: %x",data_ret);
     rds(16'h0012,data_ret);$display("read back: %x",data_ret);
     wrs(16'h0002,16'hffee);
