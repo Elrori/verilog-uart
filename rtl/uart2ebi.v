@@ -166,7 +166,7 @@ always @(posedge clk or posedge rst) begin
                 if (m_axis_tvalid) begin
                     state <= state + 1'd1;
                     crc_ret <= crc8ccitt(m_axis_tdata,crc_ret);
-                    ebi_addr_b[8:0] <= m_axis_tdata;
+                    ebi_addr_b[7:0] <= m_axis_tdata;
                 end
             end
             12: begin // wr data
@@ -180,7 +180,7 @@ always @(posedge clk or posedge rst) begin
                 if (m_axis_tvalid) begin
                     state <= state + 1'd1;
                     crc_ret <= crc8ccitt(m_axis_tdata,crc_ret);
-                    ebi_data_b[8:0] <= m_axis_tdata;
+                    ebi_data_b[7:0] <= m_axis_tdata;
                 end
             end
             14: begin // wr crc
@@ -225,10 +225,10 @@ always @(posedge clk or posedge rst) begin
                 if (state == 15) begin // wr
                     state_ebi <= 1;
                     ebi_cs       <= 1'd0;
-                    ebi_wren     <= 1'd0;
+                    ebi_wren     <= 1'd1;
                     ebi_rden     <= 1'd1;
                     ebi_addr     <= ebi_addr_b;
-                    ebi_dout     <= ebi_data_b;
+                    ebi_dout     <= {ebi_data_b[7:0],ebi_data_b[15:8]}; // revert
                 end else if(state == 4)begin //rd
                     state_ebi <= 2;
                     ebi_cs       <= 1'd0;
@@ -238,10 +238,18 @@ always @(posedge clk or posedge rst) begin
                 end
             end
             1: begin // wr
-                state_ebi <= 0;
-                ebi_cs       <= 1'd1;
-                ebi_wren     <= 1'd1;
-                ebi_rden     <= 1'd1;
+                if (cnt_ebird == 4'd5) begin
+                    state_ebi <= 0;
+                    cnt_ebird    <= 4'd0;
+                    ebi_cs       <= 1'd1;
+                    ebi_wren     <= 1'd1;
+                    ebi_rden     <= 1'd1;
+                end else if(cnt_ebird == 4'd2)begin
+                    ebi_wren     <= 1'd0;
+                    cnt_ebird    <= cnt_ebird + 1'd1;
+                end else begin
+                    cnt_ebird    <= cnt_ebird + 1'd1;
+                end
             end
             2: begin // rd
                 if (cnt_ebird == 4'd8) begin
@@ -250,7 +258,7 @@ always @(posedge clk or posedge rst) begin
                     ebi_cs       <= 1'd1;
                     ebi_wren     <= 1'd1;
                     ebi_rden     <= 1'd1;
-                    ebi_data_b2  <= ebi_din;
+                    ebi_data_b2  <= {ebi_din[7:0],ebi_din[15:8]};// revert
                 end else begin
                     cnt_ebird       <=  cnt_ebird + 1'd1;
                 end
